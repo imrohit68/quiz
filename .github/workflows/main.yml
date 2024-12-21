@@ -40,7 +40,7 @@ jobs:
       - name: Stop Old Container
         run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker stop quiz-container"
       - name: Delete Old Container
-        run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker quiz-container"
+        run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker rm quiz-container"
       - name: Delete Old Image
         run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker rmi imrohit68/quiz-assessment:latest"
       - name: Pull Image
