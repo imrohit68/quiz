@@ -1,0 +1,52 @@
+name: CICD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build Project
+        run: mvn clean install -DskipTests
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker Image
+        run: docker build -t imrohit68/quiz-assessment:latest .
+      - name: Publish Image to Docker Hub
+        run: docker push imrohit68/quiz-assessment:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      EC2_SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+      EC2_URL: ${{ secrets.EC2_URL }}
+      EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+    steps:
+      - name: Setup SSH for EC2
+        uses: omarhosny206/setup-ssh-for-ec2@v1.0.0
+        with:
+          EC2_SSH_PRIVATE_KEY: ${{ env.EC2_SSH_PRIVATE_KEY }}
+          EC2_URL: ${{ env.EC2_URL }}
+      - name: Stop Old Container
+        run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker stop quiz-container"
+      - name: Delete Old Container
+        run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker quiz-container"
+      - name: Delete Old Image
+        run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker rmi imrohit68/quiz-assessment:latest"
+      - name: Pull Image
+        run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker pull imrohit68/quiz-assessment:latest"
+      - name: Run New Container
+        run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker run -d -p 80:80 --name quiz-container imrohit68/quiz-assessment:latest"
