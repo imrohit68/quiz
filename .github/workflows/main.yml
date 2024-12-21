@@ -40,12 +40,6 @@ jobs:
         with:
           EC2_SSH_PRIVATE_KEY: ${{ env.EC2_SSH_PRIVATE_KEY }}
           EC2_URL: ${{ env.EC2_URL }}
-      - name: Stop Old Container
-        run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker stop quiz-container"
-      - name: Delete Old Container
-        run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker quiz-container"
-      - name: Delete Old Image
-        run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker rmi imrohit68/quiz-assessment:latest"
       - name: Pull Image
         run: ssh -o StrictHostKeyChecking=no ${{ env.EC2_USERNAME }}@${{ env.EC2_URL }} "sudo docker pull imrohit68/quiz-assessment:latest"
       - name: Run New Container
