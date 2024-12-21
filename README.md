@@ -109,22 +109,11 @@ This is a Spring Boot based application that allows users to take a quiz. The ap
    - **Response:**
      ```json
      {
-       "quizSessionId": 123,
-       "totalQuestions": 5,
-       "correctAnswers": 3,
-       "incorrectAnswers": 2,
-       "questions": [
-         {
-           "questionId": 1,
-           "question": "What is the capital of France?",
-           "submittedAnswer": "Paris",
-           "correctAnswer": "Paris",
-           "isCorrect": true
-         },
-         ...
-       ]
+       "id": 1,
+       "startTime": "2024-12-21T16:26:41.054743",
+       "totalQuestions": 1,
+       "correctAnswers": 0 
      }
-     ```
 
 ---
 
