@@ -47,6 +47,8 @@ This is a Spring Boot based application that allows users to take a quiz. The ap
 
 ### 2. **Start a New Quiz Session**
    - **Endpoint:** `POST /quiz/start/{email}`
+   - **Headers:** 
+     - `Authorization: Bearer <jwt_token>`
    - **Parameters:**
      - `email` (path parameter)
    - **Response:**
@@ -76,6 +78,8 @@ This is a Spring Boot based application that allows users to take a quiz. The ap
 
 ### 4. **Submit an Answer**
    - **Endpoint:** `POST /quiz/answer`
+   - **Headers:** 
+     - `Authorization: Bearer <jwt_token>`
    - **Request Body:**
      ```json
      {
@@ -93,6 +97,8 @@ This is a Spring Boot based application that allows users to take a quiz. The ap
 
 ### 5. **Complete Quiz Session**
    - **Endpoint:** `POST /quiz/complete/{quizSessionId}`
+   - **Headers:** 
+     - `Authorization: Bearer <jwt_token>`
    - **Parameters:**
      - `quizSessionId` (path parameter)
    - **Response:**
@@ -104,6 +110,8 @@ This is a Spring Boot based application that allows users to take a quiz. The ap
 
 ### 6. **Get Quiz Session Result**
    - **Endpoint:** `GET /quiz/result/{quizSessionId}`
+   - **Headers:** 
+     - `Authorization: Bearer <jwt_token>`
    - **Parameters:**
      - `quizSessionId` (path parameter)
    - **Response:**
